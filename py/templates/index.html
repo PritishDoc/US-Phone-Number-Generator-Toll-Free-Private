@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Phone Number Generator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Orbitron', sans-serif;
+            background: linear-gradient(135deg, #1f1c2c, #928dab);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 40px;
+            width: 450px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        h1, h2 {
+            text-align: center;
+            color: #00f9ff;
+        }
+
+        label {
+            display: block;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #c7c7c7;
+        }
+
+        select, input[type="number"], button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border-radius: 8px;
+            border: none;
+            outline: none;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        select, input[type="number"] {
+            background: #2e2c3a;
+            color: #00f9ff;
+        }
+
+        input[type="radio"] {
+            margin-right: 5px;
+        }
+
+        .radio-group {
+            margin-top: 10px;
+        }
+
+        button {
+            background: #00f9ff;
+            color: #1f1c2c;
+            margin-top: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        button:hover {
+            background: #0ff;
+        }
+
+        ul {
+            margin-top: 25px;
+            padding-left: 20px;
+        }
+
+        li {
+            background: rgba(255,255,255,0.05);
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Generate Numbers</h1>
+
+        <form method="POST">
+            <label for="state">Select a U.S. State:</label>
+            <select name="state" required>
+                <option value="">--Choose--</option>
+                {% for state in states %}
+                    <option value="{{ state }}" {% if selected_state == state %}selected{% endif %}>{{ state }}</option>
+                {% endfor %}
+            </select>
+
+            <label>Number Type:</label>
+            <div class="radio-group">
+                <input type="radio" name="number_type" value="private" {% if selected_type == "private" %}checked{% endif %} required> Private
+                <input type="radio" name="number_type" value="tollfree" {% if selected_type == "tollfree" %}checked{% endif %}> Toll-Free
+            </div>
+
+            <label for="count">How many numbers?</label>
+            <input type="number" name="count" min="1" value="{{ count }}" required>
+
+            <button type="submit">Generate</button>
+        </form>
+
+        {% if numbers %}
+            <h2>Generated {{ selected_type.capitalize() }} Numbers{% if selected_type == 'private' %} for {{ selected_state }}{% endif %}:</h2>
+            <ul>
+                {% for number in numbers %}
+                    <li>{{ number }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+</body>
+</html>
